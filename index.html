@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Grandstander:wght@600&family=League+Spartan:wght@600&family=Lobster&family=Merriweather:wght@300&family=Varela+Round&family=Yellowtail&display=swap");
+body {
+  text-align: center;
+}
+main {
+  width: 80%;
+  margin: auto;
+  /*   background-color: darkgreen; */
+}
+h1 {
+  background-color: lightgrey;
+  border: 2px black solid;
+  border-radius: 1rem;
+  font-family: "Black Ops One", sans-serif;
+  font-style: italic;
+  font-size: 5vw;
+}
+h1#failed-text {
+  background-color: rgba(255, 0, 0, 0.5);
+  position: absolute;
+  top: 14vh;
+  left: 35vw;
+}
+/* form > input {
+  width: 1rem
+} */
+input.letter-input {
+  width: calc(80% / 5);
+  text-align: center;
+  font-size: 4vw;
+  background-color: lightblue;
+  /*horizontal-offset, vertical-offset, blur radius, spread radius, rgba()*/
+  box-shadow: 5px 3px 5px 1px rgba(0, 0, 0, 0.5), inset 1px 2.5px 3px grey;
+}
+table {
+  margin: 2rem auto;
+}
+td,
+th {
+  width: 10rem;
+  vertical-align: top;
+  border: 1px dashed black;
+  background-color: lightblue;
+}
+#failed-text {
+  display: none;
+}
+#image-select {
+    height: 5vh;
+    width: 10vw;
+    font-size: 1rem;
+}
+@keyframes correct {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.win-animation {
+  animation: correct 2s ease infinite;
+}
+
+img {
+  max-height: 50vh;
+  max-width: 50vw;
+}</style>
+</head>
+<body>
+    <main>
+  <h1>Guess the Password!</h1>
+
+  <form id="password-form">
+
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th id="th0" class="th">Wrong <br> Letter:</th>
+        <th id="th1" class="th">Wrong <br> Letter:</th>
+        <th id="th2" class="th">Wrong <br> Letter:</th>
+        <th id="th3" class="th">Wrong <br> Letter:</th>
+        <th id="th4" class="th">Wrong <br> Letter:</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="td0" class="td">X: </td>
+        <td id="td1" class="td">X: </td>
+        <td id="td2" class="td">X: </td>
+        <td id="td3" class="td">X: </td>
+        <td id="td4" class="td">X: </td>
+      </tr>
+    </tbody>
+  </table>
+  <img src="" height="600" id="character-image" alt="character-select-image" />
+  <select name="image-choice" id="image-select">
+    <option value="" disabled selected>Choose Your Character!</option>
+    <option value="hollow-knight">Hollow Knight</option>
+    <option value="spider-man">Spider-Man</option>
+    <option value="jacket-dog">Jacket Dog</option>
+    <option value="shy-guy">Shy Guy</option>
+    <option value="sonic">Sonic</option>
+  </select>
+  <audio id="character-audio" controls>
+    <source src="" type="audio/ogg">
+  </audio>
+  <h1 id="failed-text">YOU FAILED!</h1>
+</main>
+    <script>const passwordForm = document.getElementById("password-form");
+
+// initilaze game variables
+let phrase = "guess";
+let index = 0;
+let wrong = 0;
+let failedText = document.getElementById("failed-text");
+
+for (let char of phrase) {
+  console.log(char);
+  console.log(index);
+  const letterInput = document.createElement("input");
+  letterInput.type = "text";
+  letterInput.classList.add("letter-input");
+  letterInput.maxLength = "1";
+  letterInput.id = index.toString();
+  passwordForm.appendChild(letterInput);
+  index++;
+}
+passwordForm.addEventListener("change", function (event) {
+  const thisInput = event.target;
+  const guess = thisInput.value;
+  let letterInput = document.querySelectorAll(".letter-input");
+  console.log(thisInput);
+  console.log(guess);
+
+  if (guess.toLowerCase() === phrase[thisInput.id]) {
+    console.log("you guessed right!");
+    thisInput.style.backgroundColor = "lightgreen";
+    thisInput.style.animation = "correct 6s ease-in-out 1";
+    thisInput.disabled = "true";
+  } else {
+    console.log("no soup for you!");
+    thisInput.style.backgroundColor = "lightblue";
+    const br = document.createElement("br");
+    document.getElementById("td" + thisInput.id).appendChild(br);
+    document.getElementById("td" + thisInput.id).append(guess);
+    thisInput.value = "";
+    wrong = wrong + 1;
+    console.log("Wrong:" + wrong);
+    if (wrong == 10) {
+      console.log("You failed!");
+      failedText.style.display = "block";
+    }
+  }
+});
+const spiderMan =
+  "https://drive.google.com/uc?export=view&id=1-iNqsF-vmKnVSWaJ2xAW9qeAqsb2IvhV";
+const hollowKnight =
+  "https://drive.google.com/uc?export=view&id=1UYedKnOoI5O60_DWnaSw6fjV8SVF8jB7";
+const jacketDog =
+  "https://drive.google.com/uc?export=view&id=1j9F_sYZ6lR0eGwD-dyWherkyKHuKXq5B";
+const shyGuy =
+  "https://drive.google.com/uc?export=download&id=1k3EXfKFHixE1ZhNhFUS3zgy1yiF-WcXK";
+const sonic =
+  "https://drive.google.com/uc?export=download&id=1ZZmxSSeoBwi6wdPzV99Kw6UJJLa5AArd";
+
+const characterSelectSrc =
+  "https://drive.google.com/uc?export=download&id=1ayfmqbm6-Ab2ws71xBS2SFHoGNdBJNOE";
+
+const imageSelect = document.getElementById("image-select");
+const characterImg = document.getElementById("character-image");
+const audioSelect = document.getElementById("character-audio");
+
+characterImg.src = characterSelectSrc;
+imageSelect.addEventListener("change", function () {
+  let userChoice = this.value;
+  if (userChoice === "hollow-knight") {
+    characterImg.src = hollowKnight;
+    phrase = "abyss"
+    audioSelect.src =
+      "https://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg";
+    audioSelect.play();
+  } else if (userChoice === "spider-man") {
+    characterImg.src = spiderMan;
+    phrase = "swing"
+    audioSelect.src =
+      "https://commondatastorage.googleapis.com/codeskulptor-demos/riceracer_assets/music/win.ogg";
+    audioSelect.play();
+  } else if (userChoice === "jacket-dog") {
+    characterImg.src = jacketDog;
+    phrase = "chill"
+    audioSelect.src =
+      "https://commondatastorage.googleapis.com/codeskulptor-demos/riceracer_assets/music/menu.ogg";
+    audioSelect.play();
+  } else if (userChoice === "shy-guy") {
+    characterImg.src = shyGuy;
+    phrase = "timid"
+    audioSelect.src =
+      "https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3";
+    audioSelect.play();
+  } else if (userChoice === "sonic") {
+    characterImg.src = sonic;
+    phrase = "speed";
+    audioSelect.src =
+      "https://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3";
+    audioSelect.play();
+  }
+});
+</script>
+</body>
+</html>
